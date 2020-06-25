@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {TextField, Grid, Button} from '@material-ui/core'
+import {Redirect, useHistory, useLocation} from 'react-router-dom'
 
 const Login = () => {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('')
+    const history = useHistory();
 
     const submitLogin = (event) => {
         event.preventDefault();
@@ -22,7 +24,15 @@ const Login = () => {
             })
         })
         .then(resp => resp.json())
-        .then(res => console.log(!!res.error))
+        .then(res => {
+            if (!res.error) {
+                console.log(res)
+                localStorage.setItem('userId', res.id)
+                history.push('/profile')
+            } else {
+                alert("Error " + res.error)
+            }
+        })
     }
 
     return (

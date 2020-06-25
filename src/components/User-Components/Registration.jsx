@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {TextField, Grid, Button} from '@material-ui/core'
+import {Redirect} from 'react-router-dom'
 
 const Registration = () => {
 
@@ -24,7 +25,13 @@ const Registration = () => {
             })
         })
         .then(resp => resp.json())
-        .then(reg => console.log(reg))
+        .then(res => {
+            if (!res.error) {
+                return <Redirect to='/profile'/>
+            } else {
+                alert("Error " + res.error)
+            }
+        })
     }
 
     return (
