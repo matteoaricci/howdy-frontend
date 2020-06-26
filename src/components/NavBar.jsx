@@ -1,9 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {AppBar, Toolbar, IconButton, Typography, Button} from '@material-ui/core'
 import {Menu, AccountCircle} from '@material-ui/icons'
 import {Link} from 'react-router-dom'
 
 
+const logout = (event) => {
+    event.preventDefault();
+    fetch('http://localhost:3000/users/sign_out'
+    
+    , {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ data: JSON.parse(localStorage.getItem('user'))})
+    }
+    
+    )
+    .then(res => res.json())
+    .then(resp => console.log(resp))
+}
 
 const NavBar = () => {
 
@@ -24,6 +41,10 @@ const NavBar = () => {
 
                 <Button color='inherit'>
                     Register
+                </Button>
+
+                <Button onClick={(event) => logout(event)} color='inherit'>
+                    Logout
                 </Button>
 
                 <IconButton color='inherit' aria-label='account'>
