@@ -6,18 +6,18 @@ import {Link} from 'react-router-dom'
 
 const logout = (event) => {
     event.preventDefault();
-    fetch('http://localhost:3000/users/sign_out'
-    
-    , {
+    fetch('http://localhost:3000/users/sign_out',{
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({ data: JSON.parse(localStorage.getItem('user'))})
-    }
-    
-    )
+            'Accept': 'application/json',
+            'Authorization': 'Bearer'
+        }
+        ,
+        body: JSON.stringify({ 
+            curent_user: JSON.parse(localStorage.getItem('user'))
+        })
+    })
     .then(res => res.json())
     .then(resp => console.log(resp))
 }

@@ -4,7 +4,7 @@ import {Redirect, useHistory, useLocation} from 'react-router-dom'
 
 const Login = () => {
 
-    const [login, setLogin] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('')
     const history = useHistory();
 
@@ -18,9 +18,10 @@ const Login = () => {
             },
             body: JSON.stringify({
                 user: {
-                    login,
+                    username,
                     password
                 }
+                
             })
         })
         .then(resp => resp.json())
@@ -41,8 +42,8 @@ const Login = () => {
                 <Grid style={{marginTop: '2em'}} container direction={'column'} spacing={3} width='75%'>
                     <Grid item xs={12}>
                         <TextField 
-                        value={login}
-                        onChange={event => setLogin(event.target.value)}
+                        value={username}
+                        onChange={event => setUsername(event.target.value)}
                         variant='outlined'
                         required
                         fullWidth

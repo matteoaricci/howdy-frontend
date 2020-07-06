@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {TextField, Grid, Button} from '@material-ui/core'
-import {Redirect} from 'react-router-dom'
+import {Redirect, useHistory} from 'react-router-dom'
 
 const Registration = () => {
-
+    const history = useHistory();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -26,10 +26,13 @@ const Registration = () => {
         })
         .then(resp => resp.json())
         .then(res => {
-            if (!res.error) {
-                return <Redirect to='/profile'/>
+            if (!res.errors) {
+                console.log(res)
+                localStorage.setItem('token', res.jwt)
+                localStorage.setItem('userId', res.userId)
+                history.push('/profile')
             } else {
-                alert("Error " + res.error)
+                alert("Error " + res.errors)
             }
         })
     }
