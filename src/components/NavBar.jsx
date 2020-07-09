@@ -1,28 +1,31 @@
 import React, {useState} from 'react';
 import {AppBar, Toolbar, IconButton, Typography, Button} from '@material-ui/core'
 import {Menu, AccountCircle} from '@material-ui/icons'
-import {Link} from 'react-router-dom'
-
-
-const logout = (event) => {
-    event.preventDefault();
-    fetch('http://localhost:3000/users/sign_out',{
-        method: 'DELETE',
-        headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer'
-        }
-        ,
-        body: JSON.stringify({ 
-            curent_user: JSON.parse(localStorage.getItem('user'))
-        })
-    })
-    .then(res => res.json())
-    .then(resp => console.log(resp))
-}
+import {Redirect, useHistory, useLocation} from 'react-router-dom'
 
 const NavBar = () => {
+    const history = useHistory();
+
+    const logout = (event) => {
+        event.preventDefault();
+        fetch('http://localhost:3000/users/sign_out',{
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+            }
+            ,
+            body: JSON.stringify({ 
+                jwt: localStorage.getItem('token')
+            })
+        })
+        .then(res => res.json())
+        .then(resp => {
+            localStorage.removeItem('token');
+            localStorage.setItem('status', resp)
+            history.push('/login')
+        })
+    }
 
     return (
         <AppBar position='static'>
@@ -34,6 +37,9 @@ const NavBar = () => {
                 <Typography variant='h6' style={{flexGrow: 1, textAlign: 'left'}}>
                     HOWDY
                 </Typography>
+                {
+                    !localStorage.getItem('token') ? 
+                    <div>
 
                 <Button color='inherit'>
                     Login
@@ -42,10 +48,12 @@ const NavBar = () => {
                 <Button color='inherit'>
                     Register
                 </Button>
-
+                    </div>
+:
                 <Button onClick={(event) => logout(event)} color='inherit'>
                     Logout
                 </Button>
+}
 
                 <IconButton color='inherit' aria-label='account'>
                     <AccountCircle />

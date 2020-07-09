@@ -28,7 +28,7 @@ const Login = () => {
         .then(res => {
             if (!res.error) {
                 console.log(res)
-                localStorage.setItem('user', JSON.stringify(res))
+                localStorage.setItem('token', res.jwt)
                 history.push('/profile')
             } else {
                 alert("Error " + res.error)
